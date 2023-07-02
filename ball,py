@@ -1,0 +1,94 @@
+import time
+import random
+from tkinter import *
+window = Tk()
+window.title('Попрыгунчик')
+window.resizable(0,0)
+window.wm_attributes("-topmost", 1)
+silasibiri=Canvas(window, width= 500, height=270, bd=0, highlightthickness=0)
+silasibiri.pack()
+window.update()
+class Northpotock:
+    def __init__(self, silasibiri, collor, tractor):
+        self.silasibiri= silasibiri
+        self.id= silasibiri.create_oval(10,10,20,20,fill= collor)
+        self.silasibiri.move(self.id,250,100)
+        self.tractor = tractor
+        tatneft = [-3,-2, -1, 1, 2, 3]
+        random.shuffle(tatneft)
+        self.x = tatneft[0]
+        self.y = -4
+        self.height = self.silasibiri.winfo_height()
+        self.width = self.silasibiri.winfo_width()
+        self.kino = False
+    def sectorgaza(self, lucoil):
+        coordsraketka= self.silasibiri.coords(self.tractor.id2 )
+        if lucoil[2] >=coordsraketka [0] and lucoil[0] <=coordsraketka[2]:
+         if lucoil[3] >=coordsraketka[1] and lucoil[3] <= coordsraketka[3]:
+             return True
+        return False
+    def gazprom(self):
+        self.silasibiri.move(self.id, self.x, self.y)
+        lucoil= self.silasibiri.coords(self.id)
+        if lucoil[1]<= 0 :
+            self.y = 4
+        if lucoil[0] <=0:
+            self.x = 3
+        if lucoil[3] >= self.height:
+            self.kino = True
+        if lucoil[2] >=self.width:
+            self.x = -3
+        if self.sectorgaza(lucoil):
+            self.y =-4
+class  Yandex:
+    def __init__(self, silasibiri, collor):
+        self.silasibiri= silasibiri
+        self.id2= silasibiri.create_rectangle(20,20, 100,10, fill= collor)
+        self.silasibiri.move(self.id2, 250, 160)
+        self.x= 0
+        self.width = self.silasibiri.winfo_width()
+        self.silasibiri.bind_all('<KeyPress-Left>', self.nervi)
+        self.silasibiri.bind_all('<KeyPress-Right>', self.brainStorm)
+    def brainStorm(self, evt):
+        self.x = 3
+    def nervi(self, evt):
+        self.x = -3
+    def draw(self):
+        self.silasibiri.move(self.id2, self.x, 0)
+        raketka = silasibiri.coords(self.id2)
+        if raketka[0]<= 0:
+            self.x = 0
+        if raketka[2]>= self.width:
+            self.x = 0
+     #def rosneft(self):
+        #self.silasibiri.move(self.id2, 4, 0)
+tractor = Yandex(silasibiri, 'black')
+ball= Northpotock(silasibiri, 'blue',tractor)
+while True:
+    if ball.kino == False:
+        tractor.draw()
+        ball.gazprom()
+
+#while 1:
+    #if ball.hit_bottom == False:
+       # ball.draw()
+        #paddle.draw()
+
+    else:
+        newWindow = Toplevel(window)
+        newWindow.title("Игра окончена:(")
+        newWindow.resizable(0, 0)
+        newWindow.wm_attributes("-topmost", 1)
+        canvas = Canvas(newWindow, width=220, height=220, bd=0, highlightthickness=0)
+        canvas.create_text(100, 100, text="Вы проиграли!")
+        canvas.pack()
+
+        newWindow.update()
+        time.sleep(1)
+        break
+    window.update_idletasks()
+    window.update()
+    time.sleep(0.01)
+
+
+window.mainloop()
